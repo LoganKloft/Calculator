@@ -1,0 +1,31 @@
+* {
+    border: 0px;
+    margin: 0px;
+}
+
+.calculator-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    display: flex;
+}
+
+.number, .op, .equal, .clear {
+    width: 100px;
+    height: 100px;
+    text-align: center;
+}
+
+.display {
+    width: 400px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.display-text {
+    text-align: center;
+}
