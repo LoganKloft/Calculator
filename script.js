@@ -10,6 +10,7 @@ let operators = ['+', '-', '*', '/'];
 
 // strings
 let displayText = '';
+let divideByZeroText = "Error: Divide by 0";
 
 let leftOperand = null;
 let rightOperand = null;
@@ -19,6 +20,12 @@ let op = null;
 let operatorsEnabled = false;
 
 function display() {
+    // remove error text if displaying
+    if (displayText == divideByZeroText) {
+        displayText = '';
+        refreshDisplay();
+    }
+
     displayText = displayText.concat(this.innerText);
 
     // prevent entering consecutive operators by disabling operator (op) buttons
@@ -53,7 +60,6 @@ function expression(node) {
             rightOperand = node.innerText;
             enableEquals();
         } else {
-            console.log("Nooo");
             rightOperand = rightOperand.concat(node.innerText);
         }
     }
@@ -115,8 +121,9 @@ function disableEquals() {
 }
 
 function equals() {
-    operate(op, leftOperand, rightOperand);
-    displayText = leftOperand;
+    result = operate(op, leftOperand, rightOperand);
+    displayText = result;
+    console.log(result);
     refreshDisplay();
     disableEquals();
 }
@@ -134,11 +141,13 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if (b == 0) {
+        return NaN;
+    }
     return a / b;
 }
 
 function operate(operator, a, b) {
-    console.log(operator, a, b);
     if (operator == null || a == null || b == null) return;
 
     a = +a;
@@ -157,12 +166,19 @@ function operate(operator, a, b) {
             break;
         case '/':
             result = divide(a, b);
+            if (isNaN(result)) {
+                clearDisplay();
+                displayText = divideByZeroText;
+                refreshDisplay();
+                return divideByZeroText;
+            }
             break;
     }
 
     leftOperand = result.toString();
     op = null;
     rightOperand = null;
+    return leftOperand;
 }
 
 enableNumbers();
